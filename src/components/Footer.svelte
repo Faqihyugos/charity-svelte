@@ -4,7 +4,7 @@
     <div class="xs-footer-top-layer">
       <div class="row">
         <div class="col-lg-3 col-md-6 footer-widget xs-pr-20">
-          <a href="index.html" class="xs-footer-logo">
+          <a href="/" class="xs-footer-logo">
             <img src="assets/images/footer_logo.png" alt="" />
           </a>
           <p>
@@ -55,7 +55,7 @@
               <a href="/#">Blog</a>
             </li>
             <li>
-              <a href="/#">Contact</a>
+              <a href="/contact">Contact</a>
             </li>
           </ul>
         </div>
