@@ -1,8 +1,8 @@
 <script>
   import router from "page";
-  import { onMount } from "svelte";
   import Header from "../components/Header.svelte";
   import Footer from "../components/Footer.svelte";
+  import Loader from "../components/Loader.svelte";
 
   export let params;
   let amount,
@@ -11,16 +11,14 @@
     email,
     agree = false;
 
+  let data = getCharity(params.id);
+
   async function getCharity(id) {
     const res = await fetch(
       `https://charity-api-bwa.herokuapp.com/charities/${id}`
     );
     return res.json();
   }
-
-  onMount(async function () {
-    charity = await getCharity(params.id);
-  });
 
   async function handleForm(event) {
     charity.pledged = charity.pledged + parseInt(amount);
@@ -64,7 +62,9 @@
 <Header />
 <!-- welcome section -->
 <!--breadcumb start here-->
-{#if charity}
+{#await data}
+  <Loader />
+{:then charity}
   <section
     class="xs-banner-inner-section parallax-window"
     style="background-image:url('/assets/images/backgrounds/kat-yukawa-K0E6E0a0R3A-unsplash.jpg')">
@@ -188,6 +188,6 @@
     </section>
     <!-- End donation form section -->
   </main>
-{/if}
+{/await}
 
 <Footer />
