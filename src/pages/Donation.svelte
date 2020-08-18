@@ -1,18 +1,47 @@
 <script>
+  import router from "page";
+  import { onMount } from "svelte";
   import Header from "../components/Header.svelte";
   import Footer from "../components/Footer.svelte";
-  import { charities } from "../data/charities";
 
   export let params;
-  let data;
+  let amount,
+    name,
+    charity,
+    email,
+    agree = false;
 
-  function getCharity(id) {
-    return charities.find(function (charity) {
-      return charity.id === parseInt(id);
-    });
+  async function getCharity(id) {
+    const res = await fetch(
+      `https://charity-api-bwa.herokuapp.com/charities/${id}`
+    );
+    return res.json();
   }
 
-  data = getCharity(params.id);
+  onMount(async function () {
+    charity = await getCharity(params.id);
+  });
+
+  async function handleForm(event) {
+    charity.pledged = charity.pledged + parseInt(amount);
+    try {
+      const res = await fetch(
+        `https://charity-api-bwa.herokuapp.com/charities/${params.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(charity),
+        }
+      );
+      console.log(res);
+      // redirection
+      router.redirect("/success");
+    } catch (err) {
+      console.log(err);
+    }
+  }
 </script>
 
 <style>
@@ -35,7 +64,7 @@
 <Header />
 <!-- welcome section -->
 <!--breadcumb start here-->
-{#if data}
+{#if charity}
   <section
     class="xs-banner-inner-section parallax-window"
     style="background-image:url('/assets/images/backgrounds/kat-yukawa-K0E6E0a0R3A-unsplash.jpg')">
@@ -43,7 +72,7 @@
     <div class="container">
       <div class="color-white xs-inner-banner-content">
         <h2>Donate Now</h2>
-        <p>{data.title}</p>
+        <p>{charity.title}</p>
         <ul class="xs-breadcumb">
           <li class="badge badge-pill badge-primary">
             <a href="/" class="color-white">Home /</a>
@@ -63,7 +92,7 @@
           <div class="col-lg-6">
             <div class="xs-donation-form-images">
               <img
-                src={data.thumbnail}
+                src={charity.thumbnail}
                 class="img-responsive"
                 alt="Family Images" />
             </div>
@@ -71,7 +100,7 @@
           <div class="col-lg-6">
             <div class="xs-donation-form-wraper">
               <div class="xs-heading xs-mb-30">
-                <h2 class="xs-title">{data.title}</h2>
+                <h2 class="xs-title">{charity.title}</h2>
                 <p class="small">
                   To learn more about make donate charity with us visit our "
                   <span class="color-green">Contact us</span>
@@ -83,6 +112,7 @@
               </div>
               <!-- .xs-heading end -->
               <form
+                on:submit|preventDefault={handleForm}
                 action="#"
                 method="post"
                 id="xs-donation-form"
@@ -98,7 +128,9 @@
                     name="amount"
                     id="xs-donate-amount"
                     class="form-control"
-                    placeholder="Minimum of $5" />
+                    required="true"
+                    bind:value={amount}
+                    placeholder="Your donation in Rupiah" />
                 </div>
                 <div class="xs-input-group">
                   <label for="xs-donate-name">
@@ -110,6 +142,8 @@
                     name="name"
                     id="xs-donate-name"
                     class="form-control"
+                    required="true"
+                    bind:value={name}
                     placeholder="Your awesome name" />
                 </div>
                 <div class="xs-input-group">
@@ -122,16 +156,22 @@
                     name="email"
                     id="xs-donate-email"
                     class="form-control"
+                    required="true"
+                    bind:value={email}
                     placeholder="email@awesome.com" />
                 </div>
                 <div class="xs-input-group" id="xs-input-checkbox">
-                  <input type="checkbox" name="agree" id="xs-donate-agree" />
+                  <input
+                    type="checkbox"
+                    name="agree"
+                    id="xs-donate-agree"
+                    bind:checked={agree} />
                   <label for="xs-donate-agree">
                     I Agree
                     <span class="color-light-red">**</span>
                   </label>
                 </div>
-                <button type="submit" class="btn btn-warning">
+                <button type="submit" class="btn btn-warning" disabled={!agree}>
                   <span class="badge">
                     <i class="fa fa-heart" />
                   </span>
