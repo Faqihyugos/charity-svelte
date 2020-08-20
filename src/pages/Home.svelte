@@ -11,7 +11,7 @@
 
   async function getData() {
     const res = await fetch("https://charity-api-bwa.herokuapp.com/charities");
-    charities = await res.json();
+    const data = await res.json();
 
     if (res.ok) {
       return data;
