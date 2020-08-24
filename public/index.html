@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
@@ -8,10 +9,7 @@
 
     <link rel="icon" type="image/png" href="/favicon.png" />
 
-    <link
-      href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700%7CRoboto+Slab:400,700"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700%7CRoboto+Slab:400,700" rel="stylesheet" />
 
     <link rel="stylesheet" href="/assets/css/font-awesome.min.css" />
 
@@ -35,22 +33,22 @@
     <link rel="stylesheet" href="/build/bundle.css" />
 
     <script defer src="/build/bundle.js"></script>
-  </head>
+</head>
 
-  <body>
+<body>
     <div id="root"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCy7becgYuLwns3uumNm6WdBYkBpLfy44k"></script>
 
     <script>
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.addEventListener("click", function (e) {
-          e.preventDefault();
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener("click", function(e) {
+                e.preventDefault();
 
-          document.querySelector(this.getAttribute("href")).scrollIntoView({
-            behavior: "smooth",
-          });
+                document.querySelector(this.getAttribute("href")).scrollIntoView({
+                    behavior: "smooth",
+                });
+            });
         });
-      });
     </script>
-  </body>
+</body>
+
 </html>

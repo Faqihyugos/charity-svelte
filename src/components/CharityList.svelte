@@ -1,4 +1,5 @@
 <script>
+  import { fade, slide, fly } from "svelte/transition";
   import { charities } from "../stores/data.js";
   import Modal from "./Modal.svelte";
   import Loader from "./Loader.svelte";
@@ -65,7 +66,10 @@
     <!-- .row end -->
     <div class="row">
       {#each $charities as charity}
-        <div class="col-lg-4 col-md-6">
+        <div
+          class="col-lg-4 col-md-6"
+          in:fade={{ delay: 500 }}
+          out:fly={{ delay: 500 }}>
           {#if isModalOpen === true}
             <Modal>
               <!-- modal goes here -->
@@ -153,8 +157,11 @@
               <img src={charity.thumbnail} alt="" />
 
               <div class="xs-skill-bar">
-                <div class="xs-skill-track">
-                  <p>
+                <div
+                  class="xs-skill-track"
+                  in:fly={{ delay: 3000 }}
+                  style="width:{calculateFunded(charity.pledged, charity.target)}%">
+                  <p in:fly={{ delay: 3500, x: -50 }} style="left:100%">
                     <span
                       class="number-percentage-count number-percentage"
                       data-value="90"
